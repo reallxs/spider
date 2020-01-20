@@ -58,6 +58,29 @@ def goto_movie_list_page(driver=chrome_driver):
         time.sleep(7)
 
 
+def test_goto_detail_page(i=1, driver=chrome_driver):
+    # 从列表页进入详情页
+    driver.find_element_by_xpath('//div[@class="list"]/a[{}]'.format(i)).click()
+    time.sleep(2)
+
+    for _ in range(5):
+        js = "var q=document.documentElement.scrollTop=200"
+        time.sleep(1)
+        driver.execute_script(js)
+
+    # 进入用户短评页面
+    driver.find_element_by_xpath('//div[@id="comments-section"]/div/h2/span/a').click()
+    time.sleep(3)
+
+    for comment_item in driver.find_elements_by_xpath('//div[@class="comment-item"]'):
+        title = comment_item.find_element_by_xpath('//div[@class="avatar"]/a').get_attribute('title')
+        votes = comment_item.find_element_by_xpath('//span[@class="votes"]').text
+        stars = comment_item.find_element_by_xpath('//span[starts-with(@class, "allstar")]').get_attribute('class')
+
+
+
+
+
 def get_profile(filename='config.txt'):
     _profile = {}
     with open(filename, 'r', encoding='utf-8') as fp:
